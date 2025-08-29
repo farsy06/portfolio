@@ -1,15 +1,20 @@
 import { Head } from '@inertiajs/react';
-import { motion } from 'framer-motion';
-import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiArrowRight, FiCode, FiLayers, FiSmartphone, FiExternalLink, FiMenu, FiX } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiArrowRight, FiCode, FiLayers, FiSmartphone, FiExternalLink, FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
+import TypewriterEffect from '@/components/typewriter-effect';
+import { useDarkMode } from '@/hooks/use-dark-mode';
 
 const Home = () => {
     const [isMounted, setIsMounted] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
     useEffect(() => {
         setIsMounted(true);
+        return () => setIsMounted(false);
     }, []);
+
     const skills = [
         { name: 'PHP', level: 85, icon: <FiCode className="w-5 h-5 text-blue-600" /> },
         { name: 'Laravel', level: 80, icon: <FiCode className="w-5 h-5 text-red-500" /> },
@@ -51,10 +56,17 @@ const Home = () => {
                         <div className="flex justify-between items-center h-12">
                             <motion.a
                                 href="#"
-                                className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
-                                initial={{ opacity: 0, y: -20 }}
+                                className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent block"
+                                initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{
+                                    type: 'spring',
+                                    stiffness: 300,
+                                    damping: 15,
+                                    duration: 0.3
+                                }}
                             >
                                 FF
                             </motion.a>
@@ -65,97 +77,217 @@ const Home = () => {
                                     <motion.a
                                         key={i}
                                         href={item}
-                                        className="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md"
-                                        initial={{ opacity: 0, y: -20 }}
+                                        className="relative text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 px-3 py-2 rounded-md group"
+                                        initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: i * 0.1 + 0.3 }}
+                                        transition={{
+                                            delay: i * 0.05 + 0.2,
+                                            type: 'spring',
+                                            stiffness: 300,
+                                            damping: 15,
+                                            duration: 0.3
+                                        }}
+                                        whileHover={{ y: -1 }}
+                                        whileTap={{ scale: 0.97 }}
                                     >
-                                        {item.substring(1).charAt(0).toUpperCase() + item.substring(2)}
+                                        <span className="relative">
+                                            {item.substring(1).charAt(0).toUpperCase() + item.substring(2)}
+                                            <motion.span
+                                                className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 dark:bg-blue-400"
+                                                initial={{ width: 0 }}
+                                                whileHover={{ width: '100%' }}
+                                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                            />
+                                        </span>
                                     </motion.a>
                                 ))}
                             </div>
 
-                            {/* Mobile menu button */}
-                            <div className="md:hidden flex items-center">
-                                <button
-                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 focus:outline-none"
-                                    aria-expanded="false"
+                            <div className="flex items-center space-x-2">
+                                {/* Theme Toggle - Visible on all screen sizes */}
+                                <div className="flex items-center">
+                                    <motion.button
+                                        onClick={toggleDarkMode}
+                                        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+                                        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: 0,
+                                            rotate: darkMode ? 180 : 0
+                                        }}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 300,
+                                            damping: 15,
+                                            duration: 0.3
+                                        }}
+                                    >
+                                        {darkMode ? (
+                                            <FiSun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                                        ) : (
+                                            <FiMoon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                                        )}
+                                    </motion.button>
+                                </div>
+
+                                {/* Mobile menu button */}
+                                <motion.div
+                                    className="md:hidden flex items-center"
+                                    initial={{ opacity: 0, x: 10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                        delay: 0.3,
+                                        type: 'spring',
+                                        stiffness: 300,
+                                        damping: 15,
+                                        duration: 0.3
+                                    }}
                                 >
-                                    <span className="sr-only">Open main menu</span>
-                                    {isMobileMenuOpen ? (
-                                        <FiX className="block h-6 w-6" />
-                                    ) : (
-                                        <FiMenu className="block h-6 w-6" />
-                                    )}
-                                </button>
+                                    <motion.button
+                                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                        className="inline-flex items-center justify-center p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+                                        aria-expanded={isMobileMenuOpen}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 300,
+                                            damping: 15,
+                                            duration: 0.3
+                                        }}
+                                    >
+                                        <span className="sr-only">{isMobileMenuOpen ? 'Close menu' : 'Open menu'}</span>
+                                        <motion.div
+                                            animate={isMobileMenuOpen ? 'open' : 'closed'}
+                                            variants={{
+                                                open: { rotate: 180 },
+                                                closed: { rotate: 0 }
+                                            }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            {isMobileMenuOpen ? (
+                                                <FiX className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+                                            ) : (
+                                                <FiMenu className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+                                            )}
+                                        </motion.div>
+                                    </motion.button>
+                                </motion.div>
                             </div>
                         </div>
                     </div>
 
                     {/* Mobile menu */}
-                    <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-800 shadow-lg">
-                            {['#home', '#about', '#skills', '#achievements', '#projects', '#contact'].map((item, i) => (
-                                <a
-                                    key={i}
-                                    href={item}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-700"
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                    <AnimatePresence>
+                        {isMobileMenuOpen && (
+                            <motion.div
+                                className="md:hidden fixed w-full z-40 top-16 left-0 right-0"
+                                initial={{ opacity: 0, y: -20, height: 0 }}
+                                animate={{
+                                    opacity: 1,
+                                    y: 0,
+                                    height: 'auto',
+                                    transition: {
+                                        type: 'spring',
+                                        damping: 25,
+                                        stiffness: 300
+                                    }
+                                }}
+                                exit={{
+                                    opacity: 0,
+                                    y: -20,
+                                    height: 0,
+                                    transition: {
+                                        duration: 0.2,
+                                        ease: 'easeInOut'
+                                    }
+                                }}
+                            >
+                                <motion.div
+                                    className="px-2 pt-2 pb-4 space-y-1 sm:px-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg border-t border-gray-200 dark:border-gray-700"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.1 }}
                                 >
-                                    {item.substring(1).charAt(0).toUpperCase() + item.substring(2)}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
+                                    {['#home', '#about', '#skills', '#achievements', '#projects', '#contact'].map((item, i) => (
+                                        <motion.a
+                                            key={i}
+                                            href={item}
+                                            className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-blue-400 dark:hover:bg-gray-800 transition-colors"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{
+                                                opacity: 1,
+                                                x: 0,
+                                                transition: {
+                                                    delay: 0.1 + (i * 0.05),
+                                                    type: 'spring',
+                                                    stiffness: 300
+                                                }
+                                            }}
+                                            whileHover={{ x: 4 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            {item.substring(1).charAt(0).toUpperCase() + item.substring(2)}
+                                        </motion.a>
+                                    ))}
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </nav>
 
                 {/* Hero Section */}
-                <section id="home" className="min-h-screen flex items-center justify-center pt-20">
+                <section id="home" className="min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
                     <div className="container mx-auto px-6 py-20 text-center">
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={false}
                             animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                            transition={{ duration: 0.8 }}
-                            className="max-w-4xl mx-auto"
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                            className="max-w-4xl mx-auto transition-colors duration-300"
                         >
                             <motion.p
-                                className="text-blue-600 dark:text-blue-400 font-mono mb-4"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.4 }}
+                                className="text-blue-600 dark:text-blue-400 font-mono mb-4 transition-colors duration-300"
+                                initial={false}
+                                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                                transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                             >
                                 Hi, my name is
                             </motion.p>
                             <motion.h1
-                                className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300"
-                                initial={{ opacity: 0, y: 20 }}
+                                className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 transition-all duration-300"
+                                initial={false}
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: 0.2 }}
+                                transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                             >
                                 Farisya Fatanansyah.
                             </motion.h1>
                             <motion.h2
-                                className="text-3xl md:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: 0.3 }}
+                                className="text-3xl md:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8 transition-colors duration-300"
+                                initial={false}
+                                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                                transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                I build things for the web.
+                                <TypewriterEffect
+                                    texts={['I build things for the web.', 'I create full-stack applications.', 'I love solving problems.']}
+                                />
                             </motion.h2>
                             <motion.p
-                                className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400 mb-10 leading-relaxed"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: 0.4 }}
+                                className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400 mb-10 leading-relaxed transition-colors duration-300"
+                                initial={false}
+                                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                                transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in <a href="https://smktelkom1medan.sch.id" className="text-blue-600 dark:text-blue-400">SMK Telkom 1 Medan</a>.
+                                I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in <a href="https://smktelkom1medan.sch.id" className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-300">SMK Telkom 1 Medan</a>.
                             </motion.p>
                             <motion.div
                                 className="flex flex-col sm:flex-row justify-center gap-4"
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={false}
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: 0.5 }}
+                                transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
                             >
                                 <a
                                     href="#contact"
@@ -195,8 +327,8 @@ const Home = () => {
                                 className="w-full lg:w-1/2"
                                 initial={{ opacity: 0, x: -30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, ease: 'easeOut' }}
                             >
                                 <div className="relative">
                                     <div className="w-full aspect-square max-w-md mx-auto bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl overflow-hidden">
@@ -211,8 +343,8 @@ const Home = () => {
                                 className="w-full lg:w-1/2"
                                 initial={{ opacity: 0, x: 30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: 0.2 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
                             >
                                 <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Who I Am</h3>
                                 <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
@@ -325,10 +457,10 @@ const Home = () => {
                                         </div>
                                         <div>
                                             <div className="flex items-center mb-1">
-                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">LKS Cloud Computing Certification</h3>
+                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">LKS Cloud Computing Certificate</h3>
                                                 <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2025</span>
                                             </div>
-                                            <p className="text-gray-600 dark:text-gray-300">Second place in LKS Cloud Computing Certification with an e-commerce project. Gained hands-on experience with various AWS services.</p>
+                                            <p className="text-gray-600 dark:text-gray-300">Second place in LKS Cloud Computing Competition with an e-commerce project. Gained hands-on experience with various AWS services.</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -351,10 +483,10 @@ const Home = () => {
                                         </div>
                                         <div>
                                             <div className="flex items-center mb-1">
-                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">LKS Web Technologies</h3>
-                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2024</span>
+                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">TOEIC Certificate</h3>
+                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2025</span>
                                             </div>
-                                            <p className="text-gray-600 dark:text-gray-300">Participated in LKS Web Technologies competition, showcasing expertise in modern web development technologies and frameworks.</p>
+                                            <p className="text-gray-600 dark:text-gray-300">Score 725. I can communicate in English</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -378,7 +510,7 @@ const Home = () => {
                                         <div>
                                             <div className="flex items-center mb-1">
                                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">Outstanding Student Developer</h3>
-                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2021</span>
+                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2024</span>
                                             </div>
                                             <p className="text-gray-600 dark:text-gray-300">Awarded for exceptional performance and significant contributions to student development projects.</p>
                                         </div>
