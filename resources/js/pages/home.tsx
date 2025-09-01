@@ -1,9 +1,10 @@
 import { Head } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiArrowRight, FiCode, FiLayers, FiSmartphone, FiExternalLink, FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiArrowRight, FiExternalLink, FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import TypewriterEffect from '@/components/typewriter-effect';
 import { useDarkMode } from '@/hooks/use-dark-mode';
+import { skills, achievements, projects } from '@/data/portfolio.data';
 
 const Home = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -14,37 +15,6 @@ const Home = () => {
         setIsMounted(true);
         return () => setIsMounted(false);
     }, []);
-
-    const skills = [
-        { name: 'PHP', level: 85, icon: <FiCode className="w-5 h-5 text-blue-600" /> },
-        { name: 'Laravel', level: 80, icon: <FiCode className="w-5 h-5 text-red-500" /> },
-        { name: 'React', level: 90, icon: <FiLayers className="w-5 h-5 text-blue-500" /> },
-        { name: 'TypeScript', level: 85, icon: <FiCode className="w-5 h-5 text-blue-600" /> },
-        { name: 'Node.js', level: 75, icon: <FiCode className="w-5 h-5 text-green-500" /> },
-        { name: 'Tailwind CSS', level: 85, icon: <FiSmartphone className="w-5 h-5 text-cyan-500" /> },
-        { name: 'JavaScript', level: 80, icon: <FiCode className="w-5 h-5 text-yellow-500" /> },
-    ];
-
-    const projects = [
-        {
-            title: 'PCMeister',
-            description: 'An e-commerce platform built with PHP Native and Tailwind CSS. This is my first project using PHP Native ever. Showcase my ability to work with both frontend and backend systems.',
-            tags: ['PHP', 'Tailwind CSS', 'MySQL'],
-            link: '#',
-            image: 'images/pcmeister.png',
-            github: 'https://github.com/farsy06/pcmeister',
-            demo: '#'
-        },
-        {
-            title: 'Website Class XI 2024/2025',
-            description: 'A class project for website class XI 2024/2025. This is my first project using also Laravel and Tailwind CSS too. Learned a lot from this project.',
-            tags: ['Laravel', 'Tailwind CSS', 'MySQL'],
-            link: '#',
-            image: 'images/kelas.png',
-            github: 'https://github.com/farsy06/web_kelasrpl',
-            demo: '#'
-        },
-    ];
 
     return (
         <>
@@ -439,83 +409,37 @@ const Home = () => {
 
                         <div className="max-w-3xl mx-auto">
                             <div className="space-y-8">
-                                {/* Achievement 1 */}
-                                <motion.div
-                                    className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    <div className="flex items-start">
-                                        <div className="flex-shrink-0 mr-4">
-                                            <div className="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
+                                {achievements.map((achievement) => (
+                                    <motion.div
+                                        key={achievement.id}
+                                        className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        <div className="flex items-start">
+                                            <div className="flex-shrink-0 mr-4">
+                                                <div className={`w-12 h-12 rounded-lg ${achievement.iconBg} flex items-center justify-center ${achievement.iconColor}`}>
+                                                    {achievement.icon}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="flex flex-wrap items-center gap-2 mb-1">
+                                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                                                        {achievement.title}
+                                                    </h3>
+                                                    <span className={`px-3 py-1 text-xs font-medium ${achievement.badgeColor} rounded-full`}>
+                                                        {achievement.year}
+                                                    </span>
+                                                </div>
+                                                <p className="text-gray-600 dark:text-gray-300">
+                                                    {achievement.description}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="flex items-center mb-1">
-                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">LKS Cloud Computing Certificate</h3>
-                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2025</span>
-                                            </div>
-                                            <p className="text-gray-600 dark:text-gray-300">Second place in LKS Cloud Computing Competition with an e-commerce project. Gained hands-on experience with various AWS services.</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* Achievement 2 */}
-                                <motion.div
-                                    className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: 0.1 }}
-                                >
-                                    <div className="flex items-start">
-                                        <div className="flex-shrink-0 mr-4">
-                                            <div className="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex items-center mb-1">
-                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">TOEIC Certificate</h3>
-                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2025</span>
-                                            </div>
-                                            <p className="text-gray-600 dark:text-gray-300">Score 725. I can communicate in English</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* Achievement 3 */}
-                                <motion.div
-                                    className="group relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: 0.2 }}
-                                >
-                                    <div className="flex items-start">
-                                        <div className="flex-shrink-0 mr-4">
-                                            <div className="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex items-center mb-1">
-                                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Outstanding Student Developer</h3>
-                                                <span className="ml-3 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">2024</span>
-                                            </div>
-                                            <p className="text-gray-600 dark:text-gray-300">Awarded for exceptional performance and significant contributions to student development projects.</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                    </motion.div>
+                                ))}
                             </div>
                         </div>
                     </div>
