@@ -26,7 +26,7 @@ export const achievements: Achievement[] = [
         id: 2,
         title: 'TOEIC Certificate',
         year: '2025',
-        description: 'Achieved a score of 725, demonstrating strong English communication skills.',
+        description: 'Achieved a score of ..., demonstrating strong English communication skills.',
         icon: <FiAward className="w-6 h-6" />,
         iconBg: 'bg-green-100 dark:bg-green-900/30',
         iconColor: 'text-green-600 dark:text-green-400',

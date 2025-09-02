@@ -251,7 +251,16 @@ const Home = () => {
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                                 transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in <a href="https://smktelkom1medan.sch.id" className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-300">SMK Telkom 1 Medan</a>.
+                                I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in{' '}
+                                <a
+                                    href="https://smktelkom1medan.sch.id"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-300 inline-flex items-center gap-1"
+                                >
+                                    SMK Telkom 1 Medan
+                                    <FiExternalLink className="w-3 h-3" />
+                                </a>.
                             </motion.p>
                             <motion.div
                                 className="flex flex-col sm:flex-row justify-center gap-4"
@@ -260,15 +269,21 @@ const Home = () => {
                                 transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
                             >
                                 <a
-                                    href="#contact"
-                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl hover:shadow-blue-500/20 flex items-center justify-center gap-2"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl hover:shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     Get In Touch
                                     <FiArrowRight className="w-4 h-4" />
                                 </a>
                                 <a
-                                    href="#projects"
-                                    className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors flex items-center justify-center gap-2"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     View My Work
                                 </a>
@@ -531,9 +546,8 @@ const Home = () => {
                 </section>
 
                 {/* Contact Section */}
-                <section id="contact" className="relative py-24 bg-white dark:bg-gray-900 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/10 dark:to-transparent -z-0"></div>
-                    <div className="container mx-auto px-6 relative z-10">
+                <section id="contact" className="py-24 bg-white dark:bg-gray-900">
+                    <div className="container mx-auto px-6">
                         <motion.div
                             className="text-center mb-16"
                             initial={{ opacity: 0, y: 20 }}
@@ -541,68 +555,56 @@ const Home = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
                         >
-                            <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-2 inline-block">What's Next?</span>
-                            <h2 className="text-4xl font-bold">Get In Touch</h2>
+                            <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-2 inline-block">Get In Touch</span>
+                            <h2 className="text-4xl font-bold">Contact Me</h2>
                             <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4 rounded-full"></div>
                         </motion.div>
 
-                        <div className="max-w-2xl mx-auto text-center">
-                            <motion.p
-                                className="text-lg text-gray-600 dark:text-gray-300 mb-12 leading-relaxed"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.1 }}
-                            >
-                                I'm currently looking for new opportunities. Whether you have a question or just want to say hi,
-                                I'll get back to you as soon as possible!
-                            </motion.p>
-
+                        <div className="max-w-2xl mx-auto">
                             <motion.div
+                                className="text-center mb-12"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.2 }}
-                                className="inline-block"
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
                             >
+                                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+                                    I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll get back to you as soon as possible!
+                                </p>
                                 <a
                                     href="mailto:ffatanansyah@gmail.com"
-                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl hover:shadow-blue-500/20 flex items-center gap-2 text-lg font-medium"
+                                    className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl hover:shadow-blue-500/20"
                                 >
                                     Say Hello
-                                    <FiArrowRight className="w-5 h-5" />
                                 </a>
                             </motion.div>
 
                             <motion.div
-                                className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800"
+                                className="flex justify-center gap-6"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.3 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, delay: 0.4 }}
                             >
-                                <p className="text-gray-500 dark:text-gray-400 mb-6">Or find me on these platforms</p>
-                                <div className="flex justify-center space-x-6">
-                                    {[
-                                        { icon: <FiGithub className="w-6 h-6" />, url: 'https://github.com/farsy06', label: 'GitHub' },
-                                        { icon: <FiLinkedin className="w-6 h-6" />, url: 'https://linkedin.com/in/farisya-fatanansyah-0a69372bb', label: 'LinkedIn' },
-                                        { icon: <FiMail className="w-6 h-6" />, url: 'mailto:ffatanansyah@gmail.com', label: 'Email' },
-                                        { icon: <FiInstagram className="w-6 h-6" />, url: 'https://instagram.com/fatanansyah', label: 'Instagram' }
-                                    ].map((item, index) => (
-                                        <motion.a
-                                            key={index}
-                                            href={item.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                            aria-label={item.label}
-                                            whileHover={{ y: -3 }}
-                                            whileTap={{ scale: 0.95 }}
-                                        >
-                                            {item.icon}
-                                        </motion.a>
-                                    ))}
-                                </div>
+                                {[
+                                    { icon: <FiGithub className="w-6 h-6" />, url: 'https://github.com/farsy06', label: 'GitHub' },
+                                    { icon: <FiLinkedin className="w-6 h-6" />, url: 'https://linkedin.com/in/farisya-fatanansyah-0a69372bb', label: 'LinkedIn' },
+                                    { icon: <FiMail className="w-6 h-6" />, url: 'mailto:ffatanansyah@gmail.com', label: 'Email' },
+                                    { icon: <FiInstagram className="w-6 h-6" />, url: 'https://instagram.com/fatanansyah', label: 'Instagram' }
+                                ].map((item, index) => (
+                                    <motion.a
+                                        key={index}
+                                        href={item.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                        aria-label={item.label}
+                                        whileHover={{ y: -3 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        {item.icon}
+                                    </motion.a>
+                                ))}
                             </motion.div>
                         </div>
                     </div>
@@ -610,7 +612,7 @@ const Home = () => {
                     <footer className="mt-24 text-center text-gray-500 dark:text-gray-400 text-sm">
                         <div className="container mx-auto px-6">
                             <p>Designed & Built by Farisya Fatanansyah</p>
-                            <p className="mt-2"> {new Date().getFullYear()} - All rights reserved</p>
+                            <p className="mt-2">{new Date().getFullYear()} - All rights reserved</p>
                         </div>
                     </footer>
                 </section>
