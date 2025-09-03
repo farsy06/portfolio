@@ -186,7 +186,7 @@ const Home = () => {
                                         <motion.a
                                             key={i}
                                             href={item}
-                                            className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-blue-400 dark:hover:bg-gray-800 transition-colors"
+                                            className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-blue-400 dark:hover:bg-gray-800 transition-colors duration-200 ease-in-out"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                             initial={{ opacity: 0, x: -10 }}
                                             animate={{
@@ -211,16 +211,16 @@ const Home = () => {
                 </nav>
 
                 {/* Hero Section */}
-                <section id="home" className="min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
+                <section id="home" className="min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-200 ease-in-out">
                     <div className="container mx-auto px-6 py-20 text-center">
                         <motion.div
                             initial={false}
                             animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="max-w-4xl mx-auto transition-colors duration-300"
+                            className="max-w-4xl mx-auto transition-colors duration-200 ease-in-out"
                         >
                             <motion.p
-                                className="text-blue-600 dark:text-blue-400 font-mono mb-4 transition-colors duration-300"
+                                className="text-blue-600 dark:text-blue-400 font-mono mb-4 transition-colors duration-200 ease-in-out"
                                 initial={false}
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                                 transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -228,15 +228,17 @@ const Home = () => {
                                 Hi, my name is
                             </motion.p>
                             <motion.h1
-                                className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 transition-all duration-300"
-                                initial={false}
-                                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                            >
-                                Farisya Fatanansyah.
-                            </motion.h1>
+                                className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 transition-colors duration-200 ease-in-out"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    opacity: { duration: 0.6, ease: 'easeOut' },
+                                    y: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+                                    delay: 0.3
+                                }}
+                            >Farisya Fatanansyah.</motion.h1>
                             <motion.h2
-                                className="text-3xl md:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8 transition-colors duration-300"
+                                className="text-3xl md:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8 transition-colors duration-200 ease-in-out"
                                 initial={false}
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                                 transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -246,17 +248,17 @@ const Home = () => {
                                 />
                             </motion.h2>
                             <motion.p
-                                className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400 mb-10 leading-relaxed transition-colors duration-300"
+                                className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400 mb-10 leading-relaxed transition-colors duration-200 ease-in-out"
                                 initial={false}
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                                 transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in{' '}
+                                I'm a <TypewriterEffect texts={['Full Stack', 'Game', 'Mobile', 'Web']} className="font-semibold text-blue-600 dark:text-blue-400" /> Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in{' '}
                                 <a
                                     href="https://smktelkom1medan.sch.id"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-300 inline-flex items-center gap-1"
+                                    className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-200 ease-in-out inline-flex items-center gap-1"
                                 >
                                     SMK Telkom 1 Medan
                                     <FiExternalLink className="w-3 h-3" />
@@ -283,7 +285,7 @@ const Home = () => {
                                         e.preventDefault();
                                         document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
                                     }}
-                                    className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                                    className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-in-out flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     View My Work
                                 </a>
@@ -333,19 +335,16 @@ const Home = () => {
                             >
                                 <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Who I Am</h3>
                                 <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                                    I'm a passionate Full Stack Developer with a strong foundation in both front-end and back-end technologies.
-                                    I love turning ideas into reality through clean, efficient, and scalable code.
+                                    I'm a versatile developer from Indonesia, specializing in <TypewriterEffect texts={['Full Stack', 'Game', 'Mobile', 'Web']} className="font-semibold text-blue-600 dark:text-blue-400" /> development. I bring ideas to life across multiple platforms, creating engaging digital experiences that users love.
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                                    My journey in web development started 2 years ago, and since then, I've had the privilege of working
-                                    on various projects that have honed my skills in [mention key technologies].
+                                    In the <span className="font-semibold text-blue-600 dark:text-blue-400">Full Stack</span> world, I build robust web applications from front to back. For <span className="font-semibold text-blue-600 dark:text-blue-400">Game Development</span>, I create interactive experiences that combine creativity with technical expertise. And in <span className="font-semibold text-blue-600 dark:text-blue-400">Mobile Development</span>, I craft smooth, responsive apps that feel native on any device.
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                                    When I'm not coding, you can find me [hobbies or interests], exploring new technologies, or
-                                    contributing to open-source projects.
+                                    With 2 years of hands-on experience, I've worked with technologies like React, Node.js, Unity, and Flutter to deliver high-quality solutions. I'm passionate about clean code, intuitive design, and creating seamless user experiences across all platforms. Let's build something amazing together!
                                 </p>
                                 <div className="flex flex-wrap gap-4">
-                                    {['PHP', 'Laravel', 'React', 'Node.js', 'Tailwind CSS', 'JavaScript'].map((tech, i) => (
+                                    {['PHP', 'Laravel', 'React', 'Node.js', 'Tailwind CSS', 'JavaScript', 'C#', 'Dart', 'TypeScript'].map((tech, i) => (
                                         <span
                                             key={i}
                                             className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
@@ -462,7 +461,7 @@ const Home = () => {
 
                 {/* Projects Section */}
                 <section id="projects" className="py-24 bg-white dark:bg-gray-900">
-                    <div className="container mx-auto px-4 sm:px-6">
+                    <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
                         <motion.div
                             className="text-center mb-16"
                             initial={{ opacity: 0, y: 20 }}
@@ -471,75 +470,78 @@ const Home = () => {
                             transition={{ duration: 0.6 }}
                         >
                             <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-2 inline-block">My Work</span>
-                            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Featured Projects</h2>
-                            <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
+                            <h2 className="text-4xl font-bold">Featured Projects</h2>
+                            <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4 rounded-full"></div>
                         </motion.div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 px-4 sm:px-0 lg:px-4">
                             {projects.map((project, index) => (
-                                <motion.article
+                                <motion.div
                                     key={index}
+                                    className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                                     initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-50px 0px" }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                                    className="group relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 flex flex-col h-full hover:-translate-y-1"
+                                    whileInView={{
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: {
+                                            delay: 0.1 * index,
+                                            duration: 0.5,
+                                            ease: "easeOut"
+                                        }
+                                    }}
+                                    viewport={{ once: true }}
+                                    whileHover={{ y: -3 }}
                                 >
-                                    <div className="relative overflow-hidden rounded-t-2xl">
+                                    <div className="relative overflow-hidden aspect-video">
                                         <img
-                                            className="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-105"
                                             src={project.image}
                                             alt={project.title}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                                            <div className="flex flex-wrap gap-3 w-full">
-                                                <div className="flex space-x-3">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-6">
+                                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+                                                {project.github && (
                                                     <a
                                                         href={project.github}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center px-5 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-blue-700 hover:scale-105 transform transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg"
+                                                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-all text-xs sm:text-sm font-medium border border-white/20"
                                                     >
-                                                        <FiGithub className="w-4 h-4 mr-2 flex-shrink-0" />
-                                                        <span>View Code</span>
+                                                        <FiGithub className="w-3.5 h-3.5 sm:w-4 sm:h-4"/>
+                                                        Code
                                                     </a>
-                                                    {project.demo && (
-                                                        <a
-                                                            href={project.demo}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-flex items-center px-5 py-2.5 bg-white text-gray-900 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 hover:scale-105 transform transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg"
-                                                        >
-                                                            <FiExternalLink className="w-4 h-4 mr-2 flex-shrink-0" />
-                                                            <span>Live Demo</span>
-                                                        </a>
-                                                    )}
-                                                </div>
+                                                )}
+                                                {project.demo && (
+                                                    <a
+                                                        href={project.demo}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-all text-xs sm:text-sm font-medium"
+                                                    >
+                                                        <FiExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4"/>
+                                                        Live Demo
+                                                    </a>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div className="p-6 flex-1 flex flex-col">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                            {project.title}
-                                        </h3>
-
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 flex-grow">
+                                    <div className="p-4 sm:p-6">
+                                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1.5 sm:mb-2">{project.title}</h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
                                             {project.description}
                                         </p>
-
-                                        <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                             {project.tags.map((tag, i) => (
                                                 <span
                                                     key={i}
-                                                    className="px-3 py-1 text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full"
+                                                    className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full whitespace-nowrap"
                                                 >
                                                     {tag}
                                                 </span>
                                             ))}
                                         </div>
                                     </div>
-                                </motion.article>
+                                </motion.div>
                             ))}
                         </div>
                     </div>
@@ -597,7 +599,7 @@ const Home = () => {
                                         href={item.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                        className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 ease-in-out"
                                         aria-label={item.label}
                                         whileHover={{ y: -3 }}
                                         whileTap={{ scale: 0.95 }}
@@ -612,6 +614,7 @@ const Home = () => {
                     <footer className="mt-24 text-center text-gray-500 dark:text-gray-400 text-sm">
                         <div className="container mx-auto px-6">
                             <p>Designed & Built by Farisya Fatanansyah</p>
+                            <p className="mt-2">Made with ❤️ from Indonesia</p>
                             <p className="mt-2">{new Date().getFullYear()} - All rights reserved</p>
                         </div>
                     </footer>
