@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiArrowRight, FiExternalLink, FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
+import Cursor from '@/components/cursor';
 import TypewriterEffect from '@/components/typewriter-effect';
 import { useDarkMode } from '@/hooks/use-dark-mode';
 import { skills, achievements, projects } from '@/data/portfolio.data';
@@ -18,7 +19,23 @@ const Home = () => {
 
     return (
         <>
-            <Head title="Farisya" />
+            <Head title="Farisya">
+                <style>{`
+                  * {
+                    cursor: none !important;
+                  }
+
+                  @media (pointer: coarse) {
+                    * {
+                      cursor: auto !important;
+                    }
+                    .cursor {
+                      display: none !important;
+                    }
+                  }
+                `}</style>
+            </Head>
+            <Cursor headerHeight={72} />
             <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
                 {/* Navigation */}
                 <nav className="fixed w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 border-b border-gray-200 dark:border-gray-700">
