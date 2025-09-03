@@ -1,10 +1,33 @@
+// Core React
+import { useState, useEffect, lazy, Suspense } from 'react';
+
+// Routing & State
 import { Head } from '@inertiajs/react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiArrowRight, FiExternalLink, FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
-import Cursor from '@/components/cursor';
-import TypewriterEffect from '@/components/typewriter-effect';
+
+// Animation
+import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
+
+// Icons (Dynamically imported)
+const FiGithub = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiGithub })));
+const FiLinkedin = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiLinkedin })));
+const FiMail = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiMail })));
+const FiInstagram = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiInstagram })));
+const FiArrowRight = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiArrowRight })));
+const FiExternalLink = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiExternalLink })));
+const FiMenu = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiMenu })));
+const FiX = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiX })));
+const FiMoon = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiMoon })));
+const FiSun = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiSun })));
+
+// Components (Dynamically imported)
+const Cursor = lazy(() => import('@/components/cursor'));
+const TypewriterEffect = lazy(() => import('@/components/typewriter-effect'));
+const LoadingFallback = lazy(() => import('@/components/loading-fallback'));
+
+// Hooks
 import { useDarkMode } from '@/hooks/use-dark-mode';
+
+// Data
 import { skills, achievements, projects } from '@/data/portfolio.data';
 
 const Home = () => {
@@ -18,8 +41,9 @@ const Home = () => {
     }, []);
 
     return (
-        <>
-            <Head title="Farisya">
+        <Suspense fallback={<LoadingFallback />}>
+            <LazyMotion features={domAnimation}>
+                <Head title="Farisya">
                 <style>{`
                   * {
                     cursor: none !important;
@@ -242,7 +266,7 @@ const Home = () => {
                                 animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                                 transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                Hi, my name is
+                                Hi there, my name is
                             </motion.p>
                             <motion.h1
                                 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 transition-colors duration-200 ease-in-out"
@@ -253,7 +277,43 @@ const Home = () => {
                                     y: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
                                     delay: 0.3
                                 }}
-                            >Farisya Fatanansyah.</motion.h1>
+                            >
+                                <span className="relative inline-block">
+                                    <motion.span
+                                        className="relative z-10"
+                                        initial={{ backgroundPosition: '200% 0' }}
+                                        animate={{
+                                            backgroundPosition: '-200% 0',
+                                            transition: {
+                                                repeat: Infinity,
+                                                repeatType: 'loop',
+                                                duration: 3,
+                                                ease: 'linear'
+                                            }
+                                        }}
+                                    >
+                                        Farisya Fatanansyah.
+                                        <motion.span
+                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 group-hover:opacity-100"
+                                            style={{
+                                                transform: 'rotate(3deg) scale(1.2, 1)',
+                                                filter: 'blur(4px)',
+                                                backgroundSize: '200% 100%'
+                                            }}
+                                            initial={{ x: '-100%' }}
+                                            animate={{
+                                                x: '100%',
+                                                transition: {
+                                                    repeat: Infinity,
+                                                    repeatType: 'loop',
+                                                    duration: 2,
+                                                    ease: 'easeInOut'
+                                                }
+                                            }}
+                                        />
+                                    </motion.span>
+                                </span>
+                            </motion.h1>
                             <motion.h2
                                 className="text-3xl md:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8 transition-colors duration-200 ease-in-out"
                                 initial={false}
@@ -636,8 +696,9 @@ const Home = () => {
                         </div>
                     </footer>
                 </section>
-            </div>
-        </>
+                </div>
+            </LazyMotion>
+        </Suspense>
     );
 };
 
