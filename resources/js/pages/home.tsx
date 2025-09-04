@@ -269,7 +269,7 @@ const Home = () => {
                                 Hi there, my name is
                             </motion.p>
                             <motion.h1
-                                className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 transition-colors duration-200 ease-in-out"
+                                className="text-5xl md:text-7xl font-bold mb-6 text-gray-800 dark:text-white transition-colors duration-200 ease-in-out"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
