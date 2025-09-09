@@ -5,13 +5,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { Suspense } from 'react';
 import { initializeTheme } from './hooks/use-appearance';
-
-// Loading component for Suspense fallback
-const LoadingFallback = () => (
-    <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
-    </div>
-);
+import LoadingFallback from './components/loading-fallback';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

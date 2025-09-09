@@ -19,10 +19,39 @@ const setCookie = (name: string, value: string, days = 365) => {
     document.cookie = `${name}=${value};path=/;max-age=${maxAge};SameSite=Lax`;
 };
 
-const applyTheme = (appearance: Appearance) => {
-    const isDark = appearance === 'dark' || (appearance === 'system' && prefersDark());
+// Preload both themes
+const preloadThemes = () => {
+    if (typeof document === 'undefined') return;
+    
+    // Create a style element to preload both themes
+    const style = document.createElement('style');
+    style.id = 'theme-preload';
+    style.textContent = `
+        .theme-preload * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+};
 
+const applyTheme = (appearance: Appearance) => {
+    if (typeof document === 'undefined') return;
+    
+    const isDark = appearance === 'dark' || (appearance === 'system' && prefersDark());
+    
+    // Add a class to enable transitions
+    document.documentElement.classList.add('theme-preload');
+    
+    // Apply the theme
     document.documentElement.classList.toggle('dark', isDark);
+    
+    // Force a reflow to ensure the transition happens
+    void document.documentElement.offsetHeight;
+    
+    // Remove the transition class after the transition completes
+    setTimeout(() => {
+        document.documentElement.classList.remove('theme-preload');
+    }, 300);
 };
 
 const mediaQuery = () => {
@@ -40,11 +69,21 @@ const handleSystemThemeChange = () => {
 
 export function initializeTheme() {
     const savedAppearance = (localStorage.getItem('appearance') as Appearance) || 'system';
+    
+    // Preload themes on initialization
+    if (typeof window !== 'undefined') {
+        preloadThemes();
+    }
 
     applyTheme(savedAppearance);
 
-    // Add the event listener for system theme changes...
+    // Add the event listener for system theme changes
     mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    
+    // Cleanup function
+    return () => {
+        mediaQuery()?.removeEventListener('change', handleSystemThemeChange);
+    };
 }
 
 export function useAppearance() {
