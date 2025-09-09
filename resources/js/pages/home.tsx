@@ -33,7 +33,8 @@ import { skills, achievements, projects } from '@/data/portfolio.data';
 const Home = () => {
     const [isMounted, setIsMounted] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { darkMode, toggleDarkMode } = useDarkMode();
+    const { theme, setTheme } = useDarkMode();
+    const isDark = theme === 'dark';
 
     useEffect(() => {
         setIsMounted(true);
@@ -44,22 +45,8 @@ const Home = () => {
         <Suspense fallback={<LoadingFallback />}>
             <LazyMotion features={domAnimation}>
                 <Head title="Farisya">
-                <style>{`
-                  * {
-                    cursor: none !important;
-                  }
-
-                  @media (pointer: coarse) {
-                    * {
-                      cursor: auto !important;
-                    }
-                    .cursor {
-                      display: none !important;
-                    }
-                  }
-                `}</style>
             </Head>
-            <Cursor headerHeight={72} />
+            <Cursor />
             <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
                 {/* Navigation */}
                 <nav className="fixed w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 border-b border-gray-200 dark:border-gray-700">
@@ -67,6 +54,7 @@ const Home = () => {
                         <div className="flex justify-between items-center h-12">
                             <motion.a
                                 href="#"
+                                data-cursor-hover
                                 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent block"
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -88,6 +76,7 @@ const Home = () => {
                                     <motion.a
                                         key={i}
                                         href={item}
+                                        data-cursor-hover
                                         className="relative text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 px-3 py-2 rounded-md group"
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -118,14 +107,15 @@ const Home = () => {
                                 {/* Theme Toggle - Visible on all screen sizes */}
                                 <div className="flex items-center">
                                     <motion.button
-                                        onClick={toggleDarkMode}
+                                        data-cursor-hover
+                                        onClick={() => setTheme(isDark ? 'light' : 'dark')}
                                         className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
-                                        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{
                                             opacity: 1,
                                             y: 0,
-                                            rotate: darkMode ? 180 : 0
+                                            rotate: isDark ? 180 : 0
                                         }}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
@@ -136,10 +126,10 @@ const Home = () => {
                                             duration: 0.3
                                         }}
                                     >
-                                        {darkMode ? (
-                                            <FiSun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                                        {isDark ? (
+                                            <FiSun className="w-5 h-5" />
                                         ) : (
-                                            <FiMoon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                                            <FiMoon className="w-5 h-5" />
                                         )}
                                     </motion.button>
                                 </div>
@@ -158,6 +148,7 @@ const Home = () => {
                                     }}
                                 >
                                     <motion.button
+                                        data-cursor-hover
                                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                         className="inline-flex items-center justify-center p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
                                         aria-expanded={isMobileMenuOpen}
@@ -227,6 +218,7 @@ const Home = () => {
                                         <motion.a
                                             key={i}
                                             href={item}
+                                            data-cursor-hover
                                             className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-blue-400 dark:hover:bg-gray-800 transition-colors duration-200 ease-in-out"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                             initial={{ opacity: 0, x: -10 }}
@@ -335,6 +327,7 @@ const Home = () => {
                                     href="https://smktelkom1medan.sch.id"
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    data-cursor-hover
                                     className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-200 ease-in-out inline-flex items-center gap-1"
                                 >
                                     SMK Telkom 1 Medan
@@ -362,6 +355,8 @@ const Home = () => {
                                         e.preventDefault();
                                         document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
                                     }}
+                                    data-magnetic
+                                    data-magnetic-strength="0.2"
                                     className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-in-out flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     View My Work
@@ -422,12 +417,15 @@ const Home = () => {
                                 </p>
                                 <div className="flex flex-wrap gap-4">
                                     {['PHP', 'Laravel', 'React', 'Node.js', 'Tailwind CSS', 'JavaScript', 'C#', 'Dart', 'TypeScript'].map((tech, i) => (
-                                        <span
+                                        <motion.span
                                             key={i}
-                                            className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
+                                            data-magnetic
+                                            data-magnetic-strength="0.05"
+                                            whileHover={{ scale: 1.05 }}
+                                            className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium cursor-default"
                                         >
                                             {tech}
-                                        </span>
+                                        </motion.span>
                                     ))}
                                 </div>
                             </motion.div>
@@ -458,7 +456,7 @@ const Home = () => {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="group p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
+                                    className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
                                 >
                                     <div className="w-12 h-12 mb-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300">
                                         {skill.icon}
@@ -593,6 +591,8 @@ const Home = () => {
                                                         href={project.demo}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
+                                                        data-magnetic
+                                                        data-magnetic-strength="0.15"
                                                         className="flex-1 flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-all text-xs sm:text-sm font-medium"
                                                     >
                                                         <FiExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4"/>
@@ -676,7 +676,7 @@ const Home = () => {
                                         href={item.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 ease-in-out"
+                                        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
                                         aria-label={item.label}
                                         whileHover={{ y: -3 }}
                                         whileTap={{ scale: 0.95 }}

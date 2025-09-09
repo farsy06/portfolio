@@ -1,189 +1,320 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 
+// Types
 interface CursorProps {
-    headerHeight?: number;
+    size?: number;
+    innerScale?: number;
+    outerScale?: number;
+    outerAlpha?: number;
+    innerColor?: string;
+    outerColor?: string;
+    clickScale?: number;
+    hoverScale?: number;
+    transitionDuration?: number;
+    trailingSpeed?: number;
 }
 
-const Cursor: React.FC<CursorProps> = ({ headerHeight = 72 }) => {
+// Constants
+const DEFAULT_PROPS: Required<CursorProps> = {
+    size: 40, // Increased from 30
+    innerScale: 0.3, // Increased from 0.15
+    outerScale: 1.2, // Increased from 1
+    outerAlpha: 0.6, // Increased from 0.4
+    innerColor: '255, 255, 255',
+    outerColor: '99, 179, 237', // Brighter blue
+    clickScale: 0.6, // More pronounced click effect
+    hoverScale: 1.8, // More noticeable hover effect
+    transitionDuration: 0.1, // Faster transitions
+    trailingSpeed: 0.7
+};
+
+// Add cursor styles to document head
+if (typeof document !== 'undefined') {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        /* Hide default cursor everywhere */
+        * {
+            cursor: none !important;
+        }
+        
+        /* Cursor container */
+        .cursor {
+            position: fixed;
+            display: block;
+            width: ${DEFAULT_PROPS.size}px;
+            height: ${DEFAULT_PROPS.size}px;
+            pointer-events: none !important;
+            z-index: 2147483647;
+            mix-blend-mode: difference;
+            transition: 
+                transform ${DEFAULT_PROPS.transitionDuration}s ease-out,
+                width ${DEFAULT_PROPS.transitionDuration}s ease-out,
+                height ${DEFAULT_PROPS.transitionDuration}s ease-out;
+            will-change: transform, width, height;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .cursor__inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(${DEFAULT_PROPS.innerColor}, 1);
+            transform: scale(${DEFAULT_PROPS.innerScale});
+            transition: transform ${DEFAULT_PROPS.transitionDuration}s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            z-index: 2;
+        }
+        
+        .cursor__outer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(${DEFAULT_PROPS.outerColor}, ${DEFAULT_PROPS.outerAlpha});
+            transform: scale(${DEFAULT_PROPS.outerScale});
+            transition: 
+                transform ${DEFAULT_PROPS.transitionDuration}s cubic-bezier(0.2, 0.8, 0.2, 1),
+                border-color ${DEFAULT_PROPS.transitionDuration}s ease-out;
+            box-shadow: 0 0 20px rgba(${DEFAULT_PROPS.outerColor}, 0.3);
+            z-index: 1;
+        }
+        
+        /* Hover state */
+        .cursor--hover {
+            transform: translate(-50%, -50%) scale(${DEFAULT_PROPS.hoverScale});
+        }
+        
+        .cursor--hover .cursor__inner {
+            transform: scale(${DEFAULT_PROPS.hoverScale * DEFAULT_PROPS.innerScale});
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+        }
+        
+        .cursor--hover .cursor__outer {
+            transform: scale(${DEFAULT_PROPS.hoverScale * DEFAULT_PROPS.outerScale});
+            border-width: 3px;
+            border-color: rgba(${DEFAULT_PROPS.outerColor}, 1);
+            box-shadow: 0 0 30px rgba(${DEFAULT_PROPS.outerColor}, 0.6);
+        }
+        
+        /* Click state */
+        .cursor--click .cursor__inner {
+            transform: scale(${DEFAULT_PROPS.clickScale * DEFAULT_PROPS.innerScale});
+        }
+        
+        .cursor--click .cursor__outer {
+            transform: scale(${DEFAULT_PROPS.clickScale * DEFAULT_PROPS.outerScale});
+        }
+        
+        /* Click effect */
+        [data-cursor-clicked="true"] {
+            position: relative;
+            transition: transform 0.1s ease-out;
+        }
+        
+        [data-cursor-clicked="true"]::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: cursorClickEffect 0.4s ease-out;
+        }
+        
+        @keyframes cursorClickEffect {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+        
+        @media (pointer: coarse) {
+            html, body, a, button, [data-cursor] {
+                cursor: auto !important;
+            }
+            .cursor {
+                display: none !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+const Cursor: React.FC<CursorProps> = (props) => {
+    // Merge default props with user props
+    const {
+        size = 30,
+        innerScale = 0.15,
+        outerScale = 1,
+        outerAlpha = 0.4,
+        innerColor = '255, 255, 255',
+        outerColor = '59, 130, 246',
+        clickScale = 0.7,
+        hoverScale = 1.5,
+    } = props;
+
+    // Refs
     const cursorRef = useRef<HTMLDivElement>(null);
     const rafId = useRef<number | null>(null);
-    const lastUpdateTime = useRef<number>(0);
-    const [isHovering, setIsHovering] = useState(false);
-    const [isOverHeader, setIsOverHeader] = useState(false);
+    const lastMousePosition = useRef({ x: 0, y: 0 });
+    const position = useRef({ x: 0, y: 0 });
+
+    // State
     const [isVisible, setIsVisible] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
 
-    // Use refs to track position without causing re-renders
-    const currentPosition = useRef({ x: 0, y: 0 });
-    const currentState = useRef({ isHovering: false, isOverHeader: false, isVisible: false });
+    // Motion values
+    const cursorX = useMotionValue(0);
+    const cursorY = useMotionValue(0);
+    const innerCursorScale = useMotionValue(innerScale);
+    const outerCursorScale = useMotionValue(outerScale);
 
-    // Update refs when state changes
-    useEffect(() => {
-        currentState.current = { isHovering, isOverHeader, isVisible };
-    }, [isHovering, isOverHeader, isVisible]);
-
-    // Optimized update function using RAF
-    const updateCursorPosition = useCallback((x: number, y: number) => {
-        const now = performance.now();
-
-        // Throttle to 60fps max
-        if (now - lastUpdateTime.current < 16) {
-            return;
-        }
-
-        lastUpdateTime.current = now;
-        currentPosition.current = { x, y };
-
-        // Cancel previous RAF if still pending
-        if (rafId.current) {
-            cancelAnimationFrame(rafId.current);
-        }
-
-        rafId.current = requestAnimationFrame(() => {
-            if (cursorRef.current) {
-                const state = currentState.current;
-                const scale = state.isHovering ? 1.5 : state.isOverHeader ? 1.1 : 1;
-                const size = 20; // Width/height of the cursor (w-5 h-5 = 20px)
-
-                // Simple positioning - center the cursor at mouse position
-                cursorRef.current.style.transform = `translate3d(${x - size/2}px, ${y - size/2}px, 0) scale(${scale})`;
-            }
-        });
-    }, []);
+    // Spring configurations - adjusted for snappier movement
+    const springX = useSpring(cursorX, { damping: 15, stiffness: 800, mass: 0.3 });
+    const springY = useSpring(cursorY, { damping: 15, stiffness: 800, mass: 0.3 });
 
     // Initialize cursor position and visibility
     useEffect(() => {
-        // Show cursor after a small delay to prevent flash on page load
+        const x = window.innerWidth / 2;
+        const y = window.innerHeight / 2;
+        
+        position.current = { x, y };
+        lastMousePosition.current = { x, y };
+        
+        cursorX.set(x);
+        cursorY.set(y);
+        
         const timer = setTimeout(() => {
             setIsVisible(true);
         }, 100);
-
+        
         return () => clearTimeout(timer);
-    }, []);
+    }, [cursorX, cursorY]);
 
-    const handleMouseMove = useCallback((e: MouseEvent) => {
+    // Handle mouse movement - update position directly for immediate response
+    const onMouseMove = useCallback((e: MouseEvent) => {
         const { clientX, clientY } = e;
-        updateCursorPosition(clientX, clientY);
+        lastMousePosition.current = { x: clientX, y: clientY };
+        cursorX.set(clientX);
+        cursorY.set(clientY);
+        if (!isVisible) setIsVisible(true);
+    }, [isVisible, cursorX, cursorY]);
 
-        // Only update header state if it actually changes
-        const overHeader = clientY <= headerHeight;
-        if (overHeader !== isOverHeader) {
-            setIsOverHeader(overHeader);
-        }
-    }, [headerHeight, isOverHeader, updateCursorPosition]);
-
-    const handleMouseEnter = useCallback(() => {
-        setIsVisible(true);
-        document.body.style.cursor = 'none';
+    // Handle click states
+    const onMouseDown = useCallback(() => {
+        setIsClicked(true);
     }, []);
 
-    const handleMouseLeave = useCallback(() => {
-        setIsVisible(false);
-        document.body.style.cursor = 'auto';
+    const onMouseUp = useCallback(() => {
+        setIsClicked(false);
     }, []);
 
-    // Optimized hover handlers
-    const handleElementMouseEnter = useCallback(() => {
-        if (!isHovering) setIsHovering(true);
-    }, [isHovering]);
-
-    const handleElementMouseLeave = useCallback(() => {
-        if (isHovering) setIsHovering(false);
-    }, [isHovering]);
-
-    // Check if device is touch-enabled (memoized)
-    const isTouchDevice = useMemo((): boolean => {
-        if (typeof window === 'undefined') return false;
-
-        return (
-            'ontouchstart' in window ||
-            navigator.maxTouchPoints > 0 ||
-            /Mobi|Android/i.test(navigator.userAgent)
-        );
+    // Handle hover states
+    const onElementHover = useCallback((e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const isInteractive = target.matches('a, button, [role="button"], [data-cursor-hover]');
+        setIsHovered(isInteractive);
     }, []);
 
-    // Set up event listeners with passive options
+    // Animation loop - simplified for performance
+    const animate = useCallback(() => {
+        rafId.current = requestAnimationFrame(animate);
+        
+        // Update cursor scale based on state
+        const targetInnerScale = isClicked 
+            ? innerScale * clickScale 
+            : isHovered 
+                ? innerScale * hoverScale 
+                : innerScale;
+                
+        const targetOuterScale = isClicked 
+            ? outerScale * clickScale 
+            : isHovered 
+                ? outerScale * hoverScale 
+                : outerScale;
+        
+        innerCursorScale.set(targetInnerScale);
+        outerCursorScale.set(targetOuterScale);
+    }, [
+        innerCursorScale, 
+        outerCursorScale, 
+        innerScale, 
+        outerScale, 
+        clickScale, 
+        hoverScale, 
+        isHovered, 
+        isClicked
+    ]);
+
+    // Set up event listeners
     useEffect(() => {
-        if (isTouchDevice) {
-            document.body.style.cursor = 'auto';
-            return;
-        }
-
-        const passiveOptions = { passive: true, capture: false };
-
-        window.addEventListener('mousemove', handleMouseMove, passiveOptions);
-        window.addEventListener('mouseenter', handleMouseEnter, passiveOptions);
-        window.addEventListener('mouseleave', handleMouseLeave, passiveOptions);
-
-        // Use delegation for interactive elements to avoid adding many listeners
-        const handleDocumentMouseOver = (e: Event) => {
-            const target = e.target as HTMLElement;
-            if (target.matches('a, button, [data-cursor-hover], input, select, textarea, [role="button"]')) {
-                handleElementMouseEnter();
-            }
-        };
-
-        const handleDocumentMouseOut = (e: Event) => {
-            const target = e.target as HTMLElement;
-            if (target.matches('a, button, [data-cursor-hover], input, select, textarea, [role="button"]')) {
-                handleElementMouseLeave();
-            }
-        };
-
-        document.addEventListener('mouseover', handleDocumentMouseOver, passiveOptions);
-        document.addEventListener('mouseout', handleDocumentMouseOut, passiveOptions);
-
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('mouseover', onElementHover);
+        
+        // Start animation loop
+        rafId.current = requestAnimationFrame(animate);
+        
         return () => {
-            // Cancel any pending RAF
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mousedown', onMouseDown);
+            window.removeEventListener('mouseup', onMouseUp);
+            document.removeEventListener('mouseover', onElementHover);
+            
             if (rafId.current) {
                 cancelAnimationFrame(rafId.current);
             }
-
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseenter', handleMouseEnter);
-            window.removeEventListener('mouseleave', handleMouseLeave);
-            document.removeEventListener('mouseover', handleDocumentMouseOver);
-            document.removeEventListener('mouseout', handleDocumentMouseOut);
-
-            // Reset cursor
-            document.body.style.cursor = 'auto';
         };
-    }, [
-        handleMouseMove,
-        handleMouseEnter,
-        handleMouseLeave,
-        handleElementMouseEnter,
-        handleElementMouseLeave,
-        isTouchDevice
-    ]);
-
-    // Update cursor when state changes (for immediate visual feedback)
-    useEffect(() => {
-        if (currentPosition.current.x !== 0 || currentPosition.current.y !== 0) {
-            updateCursorPosition(currentPosition.current.x, currentPosition.current.y);
-        }
-    }, [isHovering, isOverHeader, updateCursorPosition]);
-
-    // Don't render on touch devices
-    if (isTouchDevice) {
-        return null;
-    }
+    }, [onMouseMove, onMouseDown, onMouseUp, onElementHover, animate]);
 
     return (
-        <div
-            ref={cursorRef}
-            className={`cursor fixed w-5 h-5 rounded-full pointer-events-none z-[9999] transition-opacity duration-150 ease-out ${
-                isOverHeader ? 'bg-white' : 'bg-white/80'
-            } ${!isVisible ? 'opacity-0' : 'opacity-100'}`}
-            style={{
-                mixBlendMode: 'difference',
-                willChange: 'transform',
-                backfaceVisibility: 'hidden',
-                transformOrigin: 'center center',
-                left: '0px',
-                top: '0px',
-            }}
-        />
+        <AnimatePresence>
+            {isVisible && (
+                <motion.div
+                    ref={cursorRef}
+                    className={`cursor ${isHovered ? 'cursor--hover' : ''} ${isClicked ? 'cursor--click' : ''}`}
+                    style={{
+                        x: springX,
+                        y: springY,
+                        width: size,
+                        height: size,
+                        opacity: isVisible ? 1 : 0,
+                    }}
+                >
+                    <motion.div
+                        className="cursor__inner"
+                        style={{
+                            backgroundColor: `rgb(${innerColor})`,
+                        }}
+                    />
+                    <motion.div
+                        className="cursor__outer"
+                        style={{
+                            borderColor: `rgba(${outerColor}, ${outerAlpha})`,
+                        }}
+                    />
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 };
 
-export default Cursor;
+export default React.memo(Cursor);
