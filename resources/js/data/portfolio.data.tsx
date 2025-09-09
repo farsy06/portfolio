@@ -1,5 +1,22 @@
-import { FiCode, FiLayers, FiSmartphone, FiAward } from 'react-icons/fi';
-import { Skill, Achievement, Project } from '@/types/portfolio.types';
+import { lazy } from 'react';
+import type { IconType } from 'react-icons';
+import type { Skill, Achievement, Project } from '@/types/portfolio.types';
+
+// Create a type for our icon components
+type LazyIcon = React.LazyExoticComponent<IconType>;
+
+// Helper function to create lazy-loaded icons
+const createLazyIcon = (iconName: string): LazyIcon => 
+    lazy(() => 
+        import('react-icons/fi')
+            .then(mod => ({ default: mod[iconName as keyof typeof mod] as IconType }))
+    );
+
+// Define icons
+const FiCode = createLazyIcon('FiCode');
+const FiLayers = createLazyIcon('FiLayers');
+const FiSmartphone = createLazyIcon('FiSmartphone');
+const FiAward = createLazyIcon('FiAward');
 
 export const skills: Skill[] = [
     { name: 'PHP', level: 85, icon: <FiCode className="w-5 h-5 text-purple-500" /> },

@@ -7,17 +7,30 @@ import { Head } from '@inertiajs/react';
 // Animation
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 
-// Icons (Dynamically imported)
-const FiGithub = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiGithub })));
-const FiLinkedin = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiLinkedin })));
-const FiMail = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiMail })));
-const FiInstagram = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiInstagram })));
-const FiArrowRight = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiArrowRight })));
-const FiExternalLink = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiExternalLink })));
-const FiMenu = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiMenu })));
-const FiX = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiX })));
-const FiMoon = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiMoon })));
-const FiSun = lazy(() => import('react-icons/fi').then(mod => ({ default: mod.FiSun })));
+// Icons (Dynamically imported with TypeScript types)
+import type { IconType } from 'react-icons';
+
+// Create a type for our icon components
+type LazyIcon = React.LazyExoticComponent<IconType>;
+
+// Helper function to create lazy-loaded icons
+const createLazyIcon = (iconName: string): LazyIcon => 
+    lazy(() => 
+        import('react-icons/fi')
+            .then(mod => ({ default: mod[iconName as keyof typeof mod] as IconType }))
+    );
+
+// Define icons
+const FiGithub = createLazyIcon('FiGithub');
+const FiLinkedin = createLazyIcon('FiLinkedin');
+const FiMail = createLazyIcon('FiMail');
+const FiInstagram = createLazyIcon('FiInstagram');
+const FiArrowRight = createLazyIcon('FiArrowRight');
+const FiExternalLink = createLazyIcon('FiExternalLink');
+const FiMenu = createLazyIcon('FiMenu');
+const FiX = createLazyIcon('FiX');
+const FiMoon = createLazyIcon('FiMoon');
+const FiSun = createLazyIcon('FiSun');
 
 // Components (Dynamically imported)
 const Cursor = lazy(() => import('@/components/cursor'));
