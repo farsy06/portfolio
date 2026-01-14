@@ -2,8 +2,15 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { TypeAnimation } from 'react-type-animation';
 import { Badge } from '../ui/badge';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const AboutSection: React.FC = () => {
+  // Update document title for about section
+  useDocumentTitle({
+    title: 'About - Farisya Fatanansyah',
+    sectionId: 'about'
+  });
+
   return (
     <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

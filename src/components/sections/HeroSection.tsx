@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { TypeAnimation } from 'react-type-animation';
 import { useTheme } from 'next-themes';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 // Shadcn Components
 import { Button } from '../ui/button';
@@ -20,6 +21,12 @@ import { ArrowRight, ExternalLink, Menu, Moon, Sun, Home, Info, Mail, Award, Wre
 const HeroSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  // Update document title for hero section
+  useDocumentTitle({
+    title: 'Farisya Fatanansyah - Portfolio',
+    sectionId: 'home'
+  });
 
   const navItems = [
     { href: '#home', label: 'Home', icon: Home },

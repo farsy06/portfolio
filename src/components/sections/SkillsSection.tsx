@@ -2,8 +2,15 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { skills } from '../../data/portfolio.data';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const SkillsSection: React.FC = () => {
+  // Update document title for skills section
+  useDocumentTitle({
+    title: 'Skills - Farisya Fatanansyah',
+    sectionId: 'skills'
+  });
+
   return (
     <section id="skills" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

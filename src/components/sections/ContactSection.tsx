@@ -12,15 +12,27 @@ import {
   FieldLabel,
   FieldError,
 } from '../ui/field';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    title: '',
     message: '',
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
+  // Update document title for contact section
+  useDocumentTitle({
+    title: 'Contact - Farisya Fatanansyah',
+    sectionId: 'contact'
+  });
 
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
@@ -47,16 +59,34 @@ const ContactSection: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  type FieldName = 'name' | 'email' | 'title' | 'message';
+
+  const handleInputChange = (field: FieldName, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
+    // Clear previous submit status
+    if (submitStatus.type) {
+      setSubmitStatus({ type: null, message: '' });
+    }
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check honeypot field (spam protection)
+    const honeypot = (e.target as HTMLFormElement).company?.value;
+    if (honeypot) {
+      // Silently ignore bot submissions
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for your message! I\'ll get back to you soon.'
+      });
+      setFormData({ name: '', email: '', title: '', message: '' });
+      return;
+    }
 
     if (validateForm()) {
       setIsSubmitting(true);
@@ -66,20 +96,39 @@ const ContactSection: React.FC = () => {
         const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'your_template_id';
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_public_key';
 
+        // Get current timestamp
+        const currentTime = new Date().toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZoneName: 'short'
+        });
+
         const templateParams = {
           from_name: formData.name,
           from_email: formData.email,
+          title: formData.title || 'Portfolio Contact',
           message: formData.message,
+          time: currentTime,  // <-- Hidden timestamp
           to_name: 'Farisya',
         };
 
         await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
-        alert('Thank you for your message! I\'ll get back to you soon.');
-        setFormData({ name: '', email: '', message: '' });
+        setSubmitStatus({
+          type: 'success',
+          message: 'Thank you for your message! I\'ll get back to you soon.'
+        });
+        setFormData({ name: '', email: '', title: '', message: '' });
       } catch (error) {
         console.error('Error sending message:', error);
-        alert('Sorry, there was an error sending your message. Please try again or contact me directly via email.');
+        setSubmitStatus({
+          type: 'error',
+          message: 'Sorry, there was an error sending your message. Please try again or contact me directly via email.'
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -143,6 +192,16 @@ const ContactSection: React.FC = () => {
                   </Field>
 
                   <Field>
+                    <FieldLabel className="text-foreground">Subject (Optional)</FieldLabel>
+                    <Input
+                      placeholder="What's this about?"
+                      value={formData.title}
+                      onChange={(e) => handleInputChange('title', e.target.value)}
+                    />
+                    {errors.title && <FieldError>{errors.title}</FieldError>}
+                  </Field>
+
+                  <Field>
                     <FieldLabel className="text-foreground">Message</FieldLabel>
                     <Textarea
                       placeholder="Tell me about your project or just say hello..."
@@ -152,6 +211,27 @@ const ContactSection: React.FC = () => {
                     />
                     {errors.message && <FieldError>{errors.message}</FieldError>}
                   </Field>
+
+                  {/* Honeypot field for spam protection */}
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                    aria-hidden="true"
+                  />
+
+                  {/* Success/Error Messages */}
+                  {submitStatus.type && (
+                    <div className={`p-3 rounded-lg text-sm ${
+                      submitStatus.type === 'success'
+                        ? 'bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800'
+                        : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800'
+                    }`}>
+                      {submitStatus.message}
+                    </div>
+                  )}
 
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? 'Sending...' : 'Send Message'}

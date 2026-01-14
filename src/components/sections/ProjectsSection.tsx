@@ -6,8 +6,15 @@ import { ExternalLink } from 'lucide-react';
 import { projects } from '../../data/portfolio.data';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const ProjectsSection: React.FC = () => {
+  // Update document title for projects section
+  useDocumentTitle({
+    title: 'Projects - Farisya Fatanansyah',
+    sectionId: 'projects'
+  });
+
   return (
     <section id="projects" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
