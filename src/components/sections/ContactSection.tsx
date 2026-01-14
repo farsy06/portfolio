@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import emailjs from '@emailjs/browser';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
@@ -19,6 +20,7 @@ const ContactSection: React.FC = () => {
     message: '',
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
@@ -53,13 +55,34 @@ const ContactSection: React.FC = () => {
     }
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      alert('Thank you for your message! I\'ll get back to you soon.');
-      setFormData({ name: '', email: '', message: '' });
+      setIsSubmitting(true);
+      try {
+        // EmailJS configuration - Replace with your actual credentials
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'your_service_id';
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'your_template_id';
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_public_key';
+
+        const templateParams = {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: 'Farisya',
+        };
+
+        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+        alert('Thank you for your message! I\'ll get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      } catch (error) {
+        console.error('Error sending message:', error);
+        alert('Sorry, there was an error sending your message. Please try again or contact me directly via email.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -130,8 +153,8 @@ const ContactSection: React.FC = () => {
                     {errors.message && <FieldError>{errors.message}</FieldError>}
                   </Field>
 
-                  <Button type="submit" className="w-full">
-                    Send Message
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </form>
               </CardContent>
