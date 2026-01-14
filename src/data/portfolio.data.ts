@@ -1,5 +1,5 @@
 import {
-  SiReact, SiTypescript, SiJavascript, SiNodedotjs, SiLaravel, SiUnity, SiFlutter, SiCss, SiHtml5, SiTailwindcss, SiMysql, SiGit, SiDart, SiShadcnui, SiPhp, SiPython, SiVite, SiExpress, SiBootstrap, SiDotnet, SiOpenjdk
+  SiReact, SiTypescript, SiJavascript, SiNodedotjs, SiLaravel, SiUnity, SiFlutter, SiCss, SiHtml5, SiTailwindcss, SiMysql, SiGit, SiDart, SiShadcnui, SiPhp, SiPython, SiVite, SiExpress, SiBootstrap, SiDotnet, SiOpenjdk, SiFigma
 } from '@icons-pack/react-simple-icons';
 
 export const skills = [
@@ -37,6 +37,7 @@ export const skills = [
       { name: 'Unity', icon: SiUnity },
       { name: 'MySQL', icon: SiMysql },
       { name: 'Git', icon: SiGit },
+      { name: 'Figma', icon: SiFigma },
     ]
   }
 ];
@@ -44,59 +45,59 @@ export const skills = [
 export const achievements = [
   {
     id: 1,
-    title: 'Completed Full Stack Web Development',
-    year: '2023',
-    description: 'Developed multiple web applications using React, Node.js, and Laravel.',
+    title: 'LKS Cloud Computing Certificate',
+    year: '2025',
+    description: 'Second place in LKS Cloud Computing Competition with an e-commerce project. Gained hands-on experience with various AWS services.',
     icon: '🏆',
-    iconBg: 'bg-yellow-100',
-    iconColor: 'text-yellow-600',
-    badgeColor: 'bg-yellow-100 text-yellow-800',
+    iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+    iconColor: 'text-blue-600 dark:text-blue-400',
+    badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
   },
   {
     id: 2,
-    title: 'Mobile App Development',
-    year: '2023',
-    description: 'Created cross-platform mobile apps with Flutter.',
-    icon: '📱',
-    iconBg: 'bg-blue-100',
-    iconColor: 'text-blue-600',
-    badgeColor: 'bg-blue-100 text-blue-800',
+    title: 'TOEIC Certificate',
+    year: '2025',
+    description: 'Achieved a score of 815, demonstrating strong English communication skills.',
+    icon: '📜',
+    iconBg: 'bg-green-100 dark:bg-green-900/30',
+    iconColor: 'text-green-600 dark:text-green-400',
+    badgeColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
   },
   {
     id: 3,
-    title: 'Game Development',
+    title: 'Outstanding Student Developer',
     year: '2024',
-    description: 'Built interactive games using Unity and C#.',
-    icon: '🎮',
-    iconBg: 'bg-green-100',
-    iconColor: 'text-green-600',
-    badgeColor: 'bg-green-100 text-green-800',
-  },
+    description: 'Recognized for exceptional performance and contributions to software development projects during academic studies.',
+    icon: '⭐',
+    iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+    iconColor: 'text-purple-600 dark:text-purple-400',
+    badgeColor: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400'
+  }
 ];
 
 export const projects = [
   {
-    title: 'E-Commerce Platform',
-    description: 'A full-stack e-commerce solution with React frontend and Laravel backend.',
-    image: '/images/project1.jpg',
-    tags: ['React', 'Laravel', 'MySQL'],
-    github: 'https://github.com/farsy06/ecommerce',
-    demo: 'https://demo.ecommerce.com',
+    title: 'PCMeister',
+    description: 'An e-commerce platform built with PHP Native and Tailwind CSS. This is my first project using PHP Native ever. Showcase my ability to work with both frontend and backend systems.',
+    image: 'images/pcmeister.png',
+    tags: ['PHP', 'Tailwind CSS', 'MySQL'],
+    github: 'https://github.com/farsy06/pcmeister',
+    demo: ''
   },
   {
-    title: 'Task Management App',
-    description: 'A productivity app built with Flutter for cross-platform mobile experience.',
-    image: '/images/project2.jpg',
-    tags: ['Flutter', 'Dart', 'Firebase'],
-    github: 'https://github.com/farsy06/taskapp',
-    demo: 'https://demo.taskapp.com',
+    title: 'Website Class XI 2024/2025',
+    description: 'A class project for website class XI 2024/2025. This is my first project using also Laravel and Tailwind CSS too. Learned a lot from this project.',
+    image: 'images/kelas.png',
+    tags: ['Laravel', 'Tailwind CSS', 'MySQL'],
+    github: 'https://github.com/farsy06/web_kelasrpl',
+    demo: ''
   },
   {
-    title: '2D Platformer Game',
-    description: 'An exciting 2D platformer game developed with Unity.',
-    image: '/images/project3.jpg',
-    tags: ['Unity', 'C#', 'Game Development'],
-    github: 'https://github.com/farsy06/platformer',
-    demo: 'https://demo.platformer.com',
+    title: 'Digital Library',
+    description: 'UI/UX Design for digital library. Well not coding yet, but Showcasing my UI/UX Design skills in Figma.',
+    image: 'images/library.png',
+    tags: ['UI/UX'],
+    github: '',
+    demo: '',
   },
 ];

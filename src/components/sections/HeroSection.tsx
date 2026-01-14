@@ -9,27 +9,37 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
 } from '../ui/sheet';
 
 // Icons
-import { ArrowRight, ExternalLink, Menu, Moon, Sun } from 'lucide-react';
+import { ArrowRight, ExternalLink, Menu, Moon, Sun, Home, Info, Mail, Award, Wrench, Folder } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  const navItems = ['#home', '#about', '#skills', '#achievements', '#projects', '#contact'];
+  const navItems = [
+    { href: '#home', label: 'Home', icon: Home },
+    { href: '#about', label: 'About', icon: Info },
+    { href: '#skills', label: 'Skills', icon: Wrench },
+    { href: '#achievements', label: 'Achievements', icon: Award },
+    { href: '#projects', label: 'Projects', icon: Folder },
+    { href: '#contact', label: 'Contact', icon: Mail },
+  ];
 
   return (
     <>
       {/* Navigation */}
-      <nav className="fixed w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 border-b border-gray-200 dark:border-gray-700">
+      <nav className="fixed w-full bg-background/80 backdrop-blur-sm z-50 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 py-2">
           <div className="flex justify-between items-center h-12">
             <motion.a
               href="#"
               data-cursor-hover
-              className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent block"
+              className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent block"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.05 }}
@@ -49,9 +59,9 @@ const HeroSection: React.FC = () => {
               {navItems.map((item, i) => (
                 <motion.a
                   key={i}
-                  href={item}
+                  href={item.href}
                   data-cursor-hover
-                  className="relative text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 px-3 py-2 rounded-md group"
+                  className="relative text-sm font-medium text-muted-foreground hover:text-primary px-3 py-2 rounded-md group"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -65,9 +75,9 @@ const HeroSection: React.FC = () => {
                   whileTap={{ scale: 0.97 }}
                 >
                   <span className="relative">
-                    {item.substring(1).charAt(0).toUpperCase() + item.substring(2)}
+                    {item.label}
                     <motion.span
-                      className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 dark:bg-blue-400"
+                      className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary"
                       initial={{ width: 0 }}
                       whileHover={{ width: '100%' }}
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -84,7 +94,7 @@ const HeroSection: React.FC = () => {
                 size="icon"
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                className="relative hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="relative hover:bg-accent"
               >
                 <motion.div
                   animate={{ rotate: theme === 'dark' ? 180 : 0 }}
@@ -104,58 +114,78 @@ const HeroSection: React.FC = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="md:hidden hover:bg-gray-200 dark:hover:bg-gray-700"
+                    className="md:hidden hover:bg-accent"
                   >
                     <Menu className="h-6 w-6" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                  <nav className="flex flex-col gap-4">
-                    {navItems.map((item, i) => (
-                      <a
-                        key={i}
-                        href={item}
-                        className="block px-3 py-2 text-lg font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-blue-400 dark:hover:bg-gray-800 rounded-md transition-colors duration-200"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.substring(1).charAt(0).toUpperCase() + item.substring(2)}
-                      </a>
-                    ))}
+                <SheetContent side="right" className="w-[280px] sm:w-[350px] p-0 flex flex-col">
+                  {/* Header Section */}
+                  <SheetHeader className="px-6 pt-6 pb-4 space-y-2 border-b">
+                    <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
+                    <SheetDescription className="text-sm text-muted-foreground">
+                      Navigate through our sections
+                    </SheetDescription>
+                  </SheetHeader>
+
+                  {/* Navigation Links */}
+                  <nav className="flex-1 overflow-y-auto px-4 py-6">
+                    <div className="space-y-1">
+                      {navItems.map((item, i) => {
+                        const Icon = item.icon;
+                        return (
+                          <a
+                            key={i}
+                            href={item.href}
+                            className="flex items-center gap-3 px-4 py-3 text-base font-medium text-foreground/80 hover:text-foreground hover:bg-accent rounded-lg transition-all duration-200 group"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            <span>{item.label}</span>
+                          </a>
+                        );
+                      })}
+                    </div>
                   </nav>
+
+                  {/* Footer Section */}
+                  <div className="px-6 py-4 border-t bg-muted/30">
+                    <p className="text-xs text-muted-foreground text-center">
+                      © {new Date().getFullYear()} Farisya Fatanansyah. All rights reserved.
+                    </p>
+                  </div>
                 </SheetContent>
               </Sheet>
             </div>
           </div>
         </div>
 
-
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-200 ease-in-out">
+      <section id="home" className="min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-background">
         <div className="container mx-auto px-6 py-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-4xl mx-auto transition-colors duration-200 ease-in-out"
+            className="max-w-4xl mx-auto"
           >
             <motion.p
-              className="text-blue-600 dark:text-blue-400 font-mono mb-4 transition-colors duration-200 ease-in-out"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="text-primary font-mono mb-4 text-sm sm:text-base"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               Hi there, my name is
             </motion.p>
             <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-6 text-gray-800 dark:text-white transition-colors duration-200 ease-in-out"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 text-foreground"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{
                 opacity: { duration: 0.6, ease: 'easeOut' },
-                y: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
                 delay: 0.3
               }}
             >
@@ -178,9 +208,9 @@ const HeroSection: React.FC = () => {
               </span>
             </motion.h1>
             <motion.h2
-              className="text-3xl md:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8 transition-colors duration-200 ease-in-out"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-muted-foreground mb-6 sm:mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               <TypeAnimation
@@ -199,68 +229,69 @@ const HeroSection: React.FC = () => {
               />
             </motion.h2>
             <motion.p
-              className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400 mb-10 leading-relaxed transition-colors duration-200 ease-in-out"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed px-4 sm:px-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              I'm a{' '}
+              Passionate{' '}
               <TypeAnimation
                 sequence={[
-                  'Full Stack',
+                  'Full Stack Developer',
                   2000,
-                  'Game',
+                  'Game Developer',
                   2000,
-                  'Mobile',
+                  'Mobile Developer',
                   2000,
-                  'Web',
+                  'Problem Solver',
                   2000,
                 ]}
                 wrapper="span"
                 speed={50}
                 repeat={Infinity}
-                className="font-semibold text-blue-600 dark:text-blue-400"
+                className="font-semibold text-primary"
               />{' '}
-              Developer specializing in building exceptional digital experiences. Currently, I'm student class XII RPL in{' '}
+              crafting innovative digital solutions. Currently studying at{' '}
               <a
                 href="https://smktelkom1medan.sch.id"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor-hover
-                className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-200 ease-in-out inline-flex items-center gap-1"
+                className="text-primary hover:underline inline-flex items-center gap-1"
               >
                 SMK Telkom 1 Medan
                 <ExternalLink className="w-3 h-3" />
               </a>
-              .
+              , building a strong foundation in software development.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              <a
+              <Button
                 onClick={(e) => {
                   e.preventDefault();
                   document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl hover:shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                size="lg"
+                className="px-8 py-4 flex items-center justify-center gap-2"
               >
                 Get In Touch
                 <ArrowRight className="w-4 h-4" />
-              </a>
-              <a
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
                 onClick={(e) => {
                   e.preventDefault();
                   document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                data-magnetic
-                data-magnetic-strength="0.2"
-                className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-in-out flex items-center justify-center gap-2 cursor-pointer"
+                className="px-8 py-4 flex items-center justify-center gap-2"
               >
                 View My Work
-              </a>
+              </Button>
             </motion.div>
           </motion.div>
         </div>

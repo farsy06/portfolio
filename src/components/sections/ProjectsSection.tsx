@@ -9,18 +9,18 @@ import { Badge } from '../ui/badge';
 
 const ProjectsSection: React.FC = () => {
   return (
-    <section id="projects" className="py-24 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
+    <section id="projects" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-2 inline-block">My Work</span>
-          <h2 className="text-4xl font-bold">Featured Projects</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4 rounded-full"></div>
+          <span className="text-xs sm:text-sm font-mono text-primary mb-2 inline-block">My Work</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">Featured Projects</h2>
+          <div className="w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r from-primary to-primary/60 mx-auto mt-2 sm:mt-3 md:mt-4 rounded-full"></div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 px-4 sm:px-0 lg:px-4">

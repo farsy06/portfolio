@@ -70,36 +70,36 @@ const ContactSection: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-6">
+    <section id="contact" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-2 inline-block">Get In Touch</span>
-          <h2 className="text-4xl font-bold">Contact Me</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4 rounded-full"></div>
+          <span className="text-xs sm:text-sm font-mono text-primary mb-2 inline-block">Get In Touch</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">Contact Me</h2>
+          <div className="w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r from-primary to-primary/60 mx-auto mt-2 sm:mt-3 md:mt-4 rounded-full"></div>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
           {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Card>
               <CardHeader>
-                <CardTitle>Send me a message</CardTitle>
+                <CardTitle className="text-foreground">Send me a message</CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={onSubmit} className="space-y-6">
                   <Field>
-                    <FieldLabel>Name</FieldLabel>
+                    <FieldLabel className="text-foreground">Name</FieldLabel>
                     <Input
                       placeholder="Your name"
                       value={formData.name}
@@ -109,7 +109,7 @@ const ContactSection: React.FC = () => {
                   </Field>
 
                   <Field>
-                    <FieldLabel>Email</FieldLabel>
+                    <FieldLabel className="text-foreground">Email</FieldLabel>
                     <Input
                       type="email"
                       placeholder="your.email@example.com"
@@ -120,7 +120,7 @@ const ContactSection: React.FC = () => {
                   </Field>
 
                   <Field>
-                    <FieldLabel>Message</FieldLabel>
+                    <FieldLabel className="text-foreground">Message</FieldLabel>
                     <Textarea
                       placeholder="Tell me about your project or just say hello..."
                       className="min-h-[120px]"
@@ -130,7 +130,7 @@ const ContactSection: React.FC = () => {
                     {errors.message && <FieldError>{errors.message}</FieldError>}
                   </Field>
 
-                  <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600">
+                  <Button type="submit" className="w-full">
                     Send Message
                   </Button>
                 </form>
@@ -140,34 +140,37 @@ const ContactSection: React.FC = () => {
 
           {/* Social Links & Info */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-bold mb-4">Let's connect</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-4">Let's connect</h3>
               <p className="text-muted-foreground mb-6">
                 I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'd love to hear from you!
               </p>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Find me on</h4>
-              <div className="flex gap-4">
+              <h4 className="text-base sm:text-lg font-semibold text-foreground mb-4">Find me on</h4>
+              <div className="flex gap-3 sm:gap-4">
                 {socialLinks.map((item, index) => (
                   <motion.a
                     key={index}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 rounded-lg border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+                    className="p-2 sm:p-3 rounded-lg border border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 overflow-hidden"
                     aria-label={item.label}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.95 }}
+                    style={{ transform: 'translateZ(0)' }}
                   >
-                    {item.icon}
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center transition-transform duration-200 hover:scale-105">
+                      {item.icon}
+                    </div>
                   </motion.a>
                 ))}
               </div>
@@ -178,7 +181,7 @@ const ContactSection: React.FC = () => {
                 Prefer email? Reach out directly at{' '}
                 <a
                   href="mailto:ffatanansyah@gmail.com"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-primary hover:underline"
                 >
                   ffatanansyah@gmail.com
                 </a>

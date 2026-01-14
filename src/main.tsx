@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from 'next-themes'
 import './index.css'
 import App from './App.tsx'
+import CustomCursor from './components/ui/custom-cursor'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <App />
+      <CustomCursor>
+        <App />
+      </CustomCursor>
     </ThemeProvider>
   </StrictMode>,
 )
