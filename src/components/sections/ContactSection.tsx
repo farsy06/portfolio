@@ -222,7 +222,7 @@ const ContactSection: React.FC = () => {
                     aria-hidden="true"
                   />
 
-                  {/* Success/Error Messages */}
+                  {/* Status Messages */}
                   {submitStatus.type && (
                     <div className={`p-3 rounded-lg text-sm ${
                       submitStatus.type === 'success'
@@ -293,14 +293,6 @@ const ContactSection: React.FC = () => {
           </motion.div>
         </div>
       </div>
-
-      <footer className="mt-24 text-center text-muted-foreground text-sm">
-        <div className="container mx-auto px-6">
-          <p>Designed & Built by Farisya Fatanansyah</p>
-          <p className="mt-2">Made with ❤️ from Indonesia</p>
-          <p className="mt-2">{new Date().getFullYear()} - All rights reserved</p>
-        </div>
-      </footer>
     </section>
   );
 };

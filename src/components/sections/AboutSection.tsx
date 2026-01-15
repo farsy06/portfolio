@@ -12,7 +12,7 @@ const AboutSection: React.FC = () => {
   });
 
   return (
-    <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
+    <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-8 sm:mb-12 lg:mb-16"
@@ -31,7 +31,7 @@ const AboutSection: React.FC = () => {
             className="w-full xl:w-1/2 order-2 xl:order-1"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
             <div className="relative">
@@ -45,9 +45,9 @@ const AboutSection: React.FC = () => {
 
           <motion.div
             className="w-full xl:w-1/2 order-1 xl:order-2"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
           >
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-4 sm:mb-6">Who I Am</h3>
