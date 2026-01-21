@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     { href: '#home', label: 'Home', icon: Home },
     { href: '#about', label: 'About', icon: Info },
     { href: '#skills', label: 'Skills', icon: Wrench },
-    { href: '#achievements', label: 'Achievements', icon: Award },
+    { href: '#certificates', label: 'Certificates', icon: Award },
     { href: '#projects', label: 'Projects', icon: Folder },
     { href: '#contact', label: 'Contact', icon: Mail },
   ];

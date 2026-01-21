@@ -8,7 +8,7 @@ import { Skeleton } from '../components/ui/skeleton';
 const HeroSection = React.lazy(() => import('../components/sections/HeroSection'));
 const AboutSection = React.lazy(() => import('../components/sections/AboutSection'));
 const SkillsSection = React.lazy(() => import('../components/sections/SkillsSection'));
-const AchievementsSection = React.lazy(() => import('../components/sections/AchievementsSection'));
+const CertificatesSection = React.lazy(() => import('../components/sections/CertificatesSection'));
 const ProjectsSection = React.lazy(() => import('../components/sections/ProjectsSection'));
 const ContactSection = React.lazy(() => import('../components/sections/ContactSection'));
 
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
             <HeroSection />
             <AboutSection />
             <SkillsSection />
-            <AchievementsSection />
+            <CertificatesSection />
             <ProjectsSection />
             <ContactSection />
         </Layout>

@@ -1,7 +1,5 @@
-import React from 'react';
 import { motion } from 'motion/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { FaGithub } from 'react-icons/fa6';
 import { ExternalLink } from 'lucide-react';
 import { projects } from '../../data/portfolio.data';
 import { Card, CardContent } from '../ui/card';
@@ -45,9 +43,10 @@ const ProjectsSection: React.FC = () => {
                 }
               }}
               viewport={{ once: true }}
-              whileHover={{ y: -3 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group"
             >
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+              <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
                 <div className="relative overflow-hidden aspect-video">
                   <img
                     src={project.image}
@@ -63,7 +62,7 @@ const ProjectsSection: React.FC = () => {
                           rel="noopener noreferrer"
                           className="flex-1 flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-all text-xs sm:text-sm font-medium border border-white/20"
                         >
-                          <FontAwesomeIcon icon={faGithub} className="w-3.5 h-3.5 sm:w-4 sm:h-4"/>
+                          <FaGithub className="w-3.5 h-3.5 sm:w-4 sm:h-4"/>
                           Code
                         </a>
                       )}
@@ -81,14 +80,19 @@ const ProjectsSection: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <CardContent className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-muted-foreground text-xs sm:text-sm mb-4 leading-relaxed">
+                <CardContent className="p-4 sm:p-6 relative">
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 pr-20">{project.title}</h3>
+                  <p className="text-muted-foreground text-xs sm:text-sm mb-4 leading-relaxed group-hover:text-foreground/80 transition-colors duration-300">
                     {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2">
+
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag, i) => (
-                      <Badge key={i} variant="secondary" className="text-xs">
+                      <Badge
+                        key={i}
+                        variant="secondary"
+                        className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
+                      >
                         {tag}
                       </Badge>
                     ))}

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { FaGithub, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa6';
 import emailjs from '@emailjs/browser';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -135,10 +134,24 @@ const ContactSection: React.FC = () => {
     }
   };
 
+  const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
+
+  // Pre-filled message for better UX
+  const message = encodeURIComponent(
+    "Hi Farisya, I found your portfolio and would like to connect."
+  );
+
+  // WhatsApp URL with proper formatting - ensure it starts with country code
+  const cleanNumber = whatsappNumber ? whatsappNumber.replace(/\D/g, '') : '';
+  const whatsappUrl = cleanNumber && cleanNumber.length >= 10
+    ? `https://wa.me/${cleanNumber}?text=${message}`
+    : null;
+
   const socialLinks = [
-    { icon: <FontAwesomeIcon icon={faGithub} className="w-6 h-6" />, url: 'https://github.com/farsy06', label: 'GitHub' },
-    { icon: <FontAwesomeIcon icon={faLinkedin} className="w-6 h-6" />, url: 'https://linkedin.com/in/farisya-fatanansyah-0a69372bb', label: 'LinkedIn' },
-    { icon: <FontAwesomeIcon icon={faInstagram} className="w-6 h-6" />, url: 'https://instagram.com/fatanansyah', label: 'Instagram' }
+    { icon: <FaGithub className="w-6 h-6" />, url: 'https://github.com/farsy06', label: 'GitHub' },
+    { icon: <FaLinkedin className="w-6 h-6" />, url: 'https://linkedin.com/in/farisya-fatanansyah-0a69372bb', label: 'LinkedIn' },
+    { icon: <FaInstagram className="w-6 h-6" />, url: 'https://instagram.com/fatanansyah', label: 'Instagram' },
+    ...(whatsappUrl ? [{ icon: <FaWhatsapp className="w-6 h-6" />, url: whatsappUrl, label: 'WhatsApp' }] : [{ icon: <FaWhatsapp className="w-6 h-6 opacity-50" />, url: undefined, label: 'WhatsApp (Set in env)', disabled: true }])
   ];
 
   return (
@@ -263,15 +276,22 @@ const ContactSection: React.FC = () => {
                   <motion.a
                     key={index}
                     href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 sm:p-3 rounded-lg border border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 overflow-hidden"
+                    target={item.disabled ? undefined : "_blank"}
+                    rel={item.disabled ? undefined : "noopener noreferrer"}
+                    className={`p-2 sm:p-3 rounded-lg border border-border transition-all duration-200 overflow-hidden ${
+                      item.disabled
+                        ? 'cursor-not-allowed opacity-60 hover:bg-transparent'
+                        : 'hover:bg-accent hover:text-accent-foreground'
+                    }`}
                     aria-label={item.label}
-                    whileHover={{ y: -1 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={item.disabled ? {} : { y: -1 }}
+                    whileTap={item.disabled ? {} : { scale: 0.95 }}
                     style={{ transform: 'translateZ(0)' }}
+                    onClick={item.disabled ? (e) => e.preventDefault() : undefined}
                   >
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center transition-transform duration-200 hover:scale-105">
+                    <div className={`w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center transition-transform duration-200 ${
+                      item.disabled ? '' : 'hover:scale-105'
+                    }`}>
                       {item.icon}
                     </div>
                   </motion.a>
