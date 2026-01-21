@@ -52,7 +52,7 @@ const AboutSection: React.FC = () => {
           >
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-4 sm:mb-6">Who I Am</h3>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              I'm a versatile developer from Indonesia, specializing in{' '}
+              I'm a versatile developer from Indonesia, focusing on{' '}
               <TypeAnimation
                 sequence={[
                   'Full Stack',
@@ -69,13 +69,15 @@ const AboutSection: React.FC = () => {
                 repeat={Infinity}
                 className="font-semibold text-primary"
               />{' '}
-              development. I bring ideas to life across multiple platforms, creating engaging digital experiences that users love.
+              development. I enjoy building digital products that are functional, visually appealing, and easy to use across different platforms.
             </p>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              In the <span className="font-semibold text-primary">Full Stack</span> world, I build robust web applications from front to back. For <span className="font-semibold text-primary">Game Development</span>, I create interactive experiences that combine creativity with technical expertise. And in <span className="font-semibold text-primary">Mobile Development</span>, I craft smooth, responsive apps that feel native on any device.
+              As a <span className="font-semibold text-primary">Full Stack Developer</span>, I work on both frontend and backend systems, turning ideas into complete web applications. In{' '}
+              <span className="font-semibold text-primary">Game Development</span>, I create interactive experiences using Unity and C#, blending creativity with technical problem-solving. For{' '}
+              <span className="font-semibold text-primary">Mobile Development</span>, I build responsive and smooth applications using Flutter.
             </p>
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              With 2 years of hands-on experience, I've worked with technologies like React, Node.js, Unity, and Flutter to deliver high-quality solutions. I'm passionate about clean code, intuitive design, and creating seamless user experiences across all platforms. Let's build something amazing together!
+              With over <span className="font-semibold text-primary">2 years of hands-on experience</span>, I've worked with technologies such as React, TypeScript, Node.js, Laravel, Unity, and Flutter. I value clean code, thoughtful design, and continuous learning, and I’m always excited to take on new challenges and collaborate on meaningful projects.
             </p>
             <div className="flex flex-wrap gap-2">
               {['PHP', 'Laravel', 'React', 'Node.js', 'Tailwind CSS', 'JavaScript', 'C#', 'Dart', 'TypeScript'].map((tech, i) => (
