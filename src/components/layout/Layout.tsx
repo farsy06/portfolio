@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { Skeleton } from '../ui/skeleton';
+import { NoticeAlert } from '../ui/notice-alert';
 
 // Lazy-loaded layout components
 const Header = React.lazy(() => import('./Header'));
@@ -18,6 +19,7 @@ const LayoutSkeleton: React.FC = () => (
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-background">
+      <NoticeAlert />
       <Suspense fallback={<LayoutSkeleton />}>
         <Header />
       </Suspense>
